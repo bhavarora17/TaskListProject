@@ -1,7 +1,7 @@
 package com.hometest.walmart.taskList.controller;
 
-import com.hometest.walmart.taskList.dataAccessors.Task;
-import com.hometest.walmart.taskList.dataAccessors.User;
+import com.hometest.walmart.taskList.model.Task;
+import com.hometest.walmart.taskList.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +22,7 @@ public class TaskController {
 
     @GetMapping("user")
     public ResponseEntity getTaskListUser(@RequestParam(value = "userId", required = true) final String userId){
+
         return new ResponseEntity(HttpStatus.OK);
     }
 

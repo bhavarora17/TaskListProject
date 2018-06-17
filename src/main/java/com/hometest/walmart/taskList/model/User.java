@@ -1,4 +1,4 @@
-package com.hometest.walmart.taskList.dataAccessors;
+package com.hometest.walmart.taskList.model;
 
 import java.util.ArrayList;
 import java.util.List;
