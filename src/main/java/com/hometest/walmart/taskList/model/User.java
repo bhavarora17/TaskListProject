@@ -1,9 +1,14 @@
 package com.hometest.walmart.taskList.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.util.ArrayList;
 import java.util.List;
 
-
+@JsonSerialize
+@JsonDeserialize
 public class User extends Person {
 
     List<String> feedBacks;

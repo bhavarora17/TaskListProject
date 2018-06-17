@@ -1,9 +1,15 @@
 package com.hometest.walmart.taskList.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.util.List;
 import java.util.Map;
 
 
+@JsonSerialize
+@JsonDeserialize
 public class Manager extends Person{
 
     Map<Integer, User> userMap;

@@ -6,7 +6,7 @@ import java.util.List;
 
 abstract class Person {
 
-    int ID = 0;
+    public int ID = 0;
     String name;
     List<String> notes = new ArrayList<>();
 
