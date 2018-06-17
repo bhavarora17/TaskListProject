@@ -22,6 +22,7 @@ public class TaskController {
 
     @GetMapping("user")
     public ResponseEntity getTaskListUser(@RequestParam(value = "userId", required = true) final String userId) {
+
         return new ResponseEntity(HttpStatus.OK);
     }
 
