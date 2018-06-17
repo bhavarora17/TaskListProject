@@ -1,5 +1,7 @@
 package com.hometest.walmart.taskList.controller;
 
+import com.hometest.walmart.taskList.dataAccessors.Task;
+import com.hometest.walmart.taskList.dataAccessors.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,13 +14,19 @@ public class TaskController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PostMapping("/manage/feedback")
+    public ResponseEntity provideFeedback(@RequestBody String body, @PathVariable("feedback") final String feedback){
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
     @GetMapping("user")
     public ResponseEntity getTaskListUser(@RequestParam(value = "userId", required = true) final String userId){
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("user/create")
-    public ResponseEntity createUser(@RequestBody String user){
+    public ResponseEntity createUser(@RequestBody User user){
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -28,37 +36,31 @@ public class TaskController {
     }
 
     @PatchMapping("user/update")
-    public ResponseEntity updateUserByManager(@RequestParam(value = "userId", required = true) final String userId, @RequestBody String body){
+    public ResponseEntity updateUserByManager(@RequestParam(value = "userId", required = true) final String userId, @RequestBody User body){
         return new ResponseEntity(HttpStatus.OK);
     }
 
-
-    @PatchMapping("/update/task/{taskid}")
-    public ResponseEntity updateTask(@RequestBody String body, @PathVariable("taskId") final String taskId){
+    @PatchMapping("task/update/{taskid}")
+    public ResponseEntity updateTask(@RequestBody Task body, @PathVariable("taskId") final String taskId){
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("/create/task/{user}")
-    public ResponseEntity createTask(@RequestBody String body, @PathVariable("user") final String user){
+    @PostMapping("task/create/{userId}")
+    public ResponseEntity createTask(@RequestBody Task body, @PathVariable("userId") final String userId){
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/task/{taskId}")
-    public ResponseEntity deleteMapping(@PathVariable("taskId") final Integer taskId){
+    @DeleteMapping("task/delete/{taskId}")
+    public ResponseEntity deleteTask(@PathVariable("taskId") final String taskId){
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("/manage/feedback")
-    public ResponseEntity provideFeedback(@RequestBody String body, @PathVariable("feedback") final String feedback){
+    @PostMapping("notes/create")
+    public ResponseEntity createNotes(@RequestBody String body){
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("/create/notes")
-    public ResponseEntity provideFeedback(@RequestBody String body){
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @PatchMapping("/update/notes/{notesId}")
+    @PatchMapping("notes/update/{notesId}")
     public ResponseEntity updateNotes(@RequestBody String body){
         return new ResponseEntity(HttpStatus.OK);
     }
