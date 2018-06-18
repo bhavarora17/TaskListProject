@@ -1,7 +1,9 @@
 package com.hometest.walmart.taskList.controller;
 
+import com.hometest.walmart.taskList.dataAccessor.UserDataAccessor;
 import com.hometest.walmart.taskList.model.Task;
 import com.hometest.walmart.taskList.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,21 +11,27 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class TaskController {
 
+    private UserDataAccessor userDataAccessor;
+
+    @Autowired
+    TaskController(UserDataAccessor userDataAccessor){
+        this.userDataAccessor = userDataAccessor;
+    }
+
     @GetMapping("manager")
     public ResponseEntity getListAll() {
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("/manage/feedback")
-    public ResponseEntity provideFeedback(@RequestBody String body, @PathVariable("feedback") final String feedback) {
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<Object> provideFeedback(@RequestBody String body, @PathVariable("feedback") final String feedback) {
+        return new ResponseEntity(new User("Bhavya"), HttpStatus.OK);
     }
 
-
     @GetMapping("user")
-    public ResponseEntity getTaskListUser(@RequestParam(value = "userId", required = true) final String userId) {
-
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<Object> getTaskListUser(@RequestParam(value = "userId", required = true) final String userId) {
+        User user = userDataAccessor.getUserData("123");
+        return new ResponseEntity(user, HttpStatus.OK);
     }
 
     @PostMapping("user/create")

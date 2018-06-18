@@ -15,11 +15,12 @@ public class UserDataAccessor {
 
     }
 
-
-    void getUserData(String userId) {
+    public User getUserData(String userId) {
+        //mapper.setVisibilityChecker(mapper.getVisibilityChecker().withFieldVisibility(Visibility.ANY));
         User user = new User("Bhavya");
         user.ID = 123;
 
+        return user;
     }
 
 }

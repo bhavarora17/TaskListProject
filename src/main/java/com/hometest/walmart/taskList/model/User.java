@@ -1,6 +1,7 @@
 package com.hometest.walmart.taskList.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -17,6 +18,19 @@ public class User extends Person {
     public User( String name) {
         this.name = name;
         taskList = new ArrayList<>();
+    }
+
+    @Override
+    @JsonProperty
+    public String getName() {
+        return super.getName();
+    }
+
+
+    @Override
+    @JsonProperty
+    public List<String> getNotes() {
+        return super.getNotes();
     }
 
     @Override

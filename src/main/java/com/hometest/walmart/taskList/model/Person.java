@@ -8,6 +8,11 @@ abstract class Person {
 
     public int ID = 0;
     String name;
+
+    public List<String> getNotes() {
+        return notes;
+    }
+
     List<String> notes = new ArrayList<>();
 
     Task createTask(int priority, int estimatedTime, boolean isRecurring) {
