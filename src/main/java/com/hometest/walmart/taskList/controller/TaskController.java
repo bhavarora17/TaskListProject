@@ -55,8 +55,9 @@ public class TaskController {
     }
 
     @PatchMapping("user/update")
-    public ResponseEntity updateUserByManager(@RequestParam(value = "userId", required = true) final String userId, @RequestBody User body) {
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<Object> updateUserByManager(@RequestParam(value = "userId", required = true) final String userId, @RequestBody User body) {
+        User user = userDataAccessor.updateUser(userId);
+        return new ResponseEntity(user, HttpStatus.OK);
     }
 
     @PatchMapping("task/update/{taskid}")
@@ -88,5 +89,4 @@ public class TaskController {
     public ResponseEntity getNotes(@RequestBody String body) {
         return new ResponseEntity(HttpStatus.OK);
     }
-
 }

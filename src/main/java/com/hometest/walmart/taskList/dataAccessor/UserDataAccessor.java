@@ -16,6 +16,10 @@ public class UserDataAccessor {
 
     }
 
+    public User updateUser(String userId){
+        return null;// return updated user
+    }
+
     public void deleteUser(String userId){
         //delete using userId
     }
