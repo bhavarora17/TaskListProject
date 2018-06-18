@@ -4,21 +4,36 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.sun.xml.internal.bind.annotation.OverrideAnnotationOf;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.TreeSet;
 
 @JsonSerialize
 @JsonDeserialize
 public class User extends Person {
 
-    List<String> feedBacks, Notes;
-    List<Task> taskList, finishedTask;
+    List<String> feedBacks;
+    TreeSet<Task> taskList, finishedTask;
 
     public User(String name) {
         this.name = name;
         this.id = String. valueOf(nextValue());
-        taskList = new ArrayList<>();
+        taskList = new TreeSet<>(new customComparator());
+    }
+
+    class customComparator implements Comparator<Task> {
+
+        @Override
+        public int compare(Task task1, Task task2) {
+
+            if (task1.getStatusValue() == task2.getStatusValue())
+                return task2.getRank() - task1.getRank();
+
+            return  task1.getStatusValue() - task2.getStatusValue();
+        }
     }
 
     @Override
@@ -33,50 +48,15 @@ public class User extends Person {
         return super.getID();
     }
 
-    public List<Task> getTaskList() { return this.taskList; }
-
-    public List<Task> getFinishTaskList() { return this.finishedTask; }
-
     @Override
     @JsonProperty
     public List<String> getNotes() { return super.getNotes(); }
 
-    public List<String> getFeedbacks() { return this.feedBacks; }
+    public TreeSet<Task> getTaskList() { return this.taskList; }
 
-    @Override
-    public void updateNotes() {
+    public TreeSet<Task> getFinishTaskList() { return this.finishedTask; }
 
-        notes.add("This is an example");
+    public List<String> getFeedback() { return this.feedBacks; }
 
-    }
-
-    @Override
-    public void checkAllTaskStatus() {
-
-        for (Task task : taskList)
-            System.out.println(task.getStatus());
-
-    }
-
-    void addTaskToTaskList(int priority, int estimatedTime, boolean isRecurring) {
-
-        taskList.add(createTask(priority, estimatedTime, isRecurring));
-
-    }
-
-
-    void viewTaskList() {
-
-        for (Task task : taskList)
-            System.out.println(task.getID());
-
-    }
-
-    void viewFeedbacks() {
-
-        for (String string : feedBacks)
-            System.out.println(string);
-
-    }
 
 }

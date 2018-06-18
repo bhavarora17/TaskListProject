@@ -1,5 +1,6 @@
 package com.hometest.walmart.taskList.dataAccessor;
 
+import com.hometest.walmart.taskList.model.Task;
 import com.hometest.walmart.taskList.model.User;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
@@ -28,37 +29,10 @@ public class UserDataAccessor {
 
     public Map<String, User> getUserInfo() { return userInfo; }
 
-    MongoCollection<Document> getUserCollection() {
+    public MongoCollection<Document> getUserCollection() {
 
         createMongoDBCollection.createConnection();
         return createMongoDBCollection.getCollection("People");
-
-    }
-
-    public void createNotes(String notes){
-        return ;//
-    }
-
-    public String updateNotes(String userId, String notes){
-        return null;
-    }
-
-    public List<String> getNotes(String userId) {
-
-        User user = getUserData(userId);
-        return user.getNotes();
-    }
-
-    public User updateUser(String userId){
-        return null;// return updated user
-    }
-
-    public void deleteUser(String userId){
-
-        MongoCollection<Document> col = getUserCollection();
-        col.deleteOne(new Document("_id", new ObjectId(userId)));
-        userInfo.remove(userId);
-        createMongoDBCollection.getMongoClient().close();
 
     }
 
@@ -75,8 +49,43 @@ public class UserDataAccessor {
 
     }
 
+    public void deleteUser(String userId){
+
+        MongoCollection<Document> col = getUserCollection();
+        col.deleteOne(new Document("_id", new ObjectId(userId)));
+        userInfo.remove(userId);
+        createMongoDBCollection.getMongoClient().close();
+
+    }
+
+    public void createNotes(String userId, String note){
+        User user = getUserData(userId);
+        List<String> notes = user.getNotes();
+        notes.add(note);
+    }
+
+    public List<String> viewNotes(String userId) {
+
+        User user = getUserData(userId);
+        return user.getNotes();
+    }
+
+    public void giveFeedback(String userId, String feedback) {
+
+        User user = getUserData(userId);
+        List<String> feedBacks = user.getFeedback();
+        feedBacks.add(feedback);
+
+    }
+
+    public List<String> viewFeedback(String userId) {
+
+        User user = getUserData(userId);
+        return user.getFeedback();
+
+    }
+
     public User getUserData(String userId) {
-        //mapper.setVisibilityChecker(mapper.getVisibilityChecker().withFieldVisibility(Visibility.ANY));
 
         User user = null;
         MongoCollection<Document> col = getUserCollection();
@@ -95,6 +104,7 @@ public class UserDataAccessor {
 
         createMongoDBCollection.getMongoClient().close();
         return user;
+
     }
 
     public Map<String, User> getAllUsers(){
@@ -112,16 +122,6 @@ public class UserDataAccessor {
 
         createMongoDBCollection.getMongoClient().close();
         return userInfo;
-    }
-
-    public void giveFeedback() {
-
-    }
-
-    public List<String> getFeedback(String userId) {
-
-        User user = getUserData(userId);
-        return user.getFeedbacks();
     }
 
 }

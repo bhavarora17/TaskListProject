@@ -38,71 +38,8 @@ public class Manager extends Person{
     @JsonProperty
     public List<String> getNotes() { return super.getNotes(); }
 
-    @Override
-    public void updateNotes() {
+    public Map<String, User> getAllUsers() { return this.userMap; }
 
-        notes.add("This is an example");
-
-    }
-
-    @Override
-    public void checkAllTaskStatus() {
-
-        for (User user : userMap.values()) {
-
-            List<Task> taskList = user.taskList;
-
-            for (Task task : taskList) {
-
-                System.out.println(user.getID() + " " + user.getName() + " " +
-                        task.getID() + " " + task.getPriority() + " " + task.getEstimatedTime() + " " +
-                        task.getCompletionTime() + " " + task.getStatus());
-
-            }
-        }
-    }
-
-
-    void assignTaskToTheUser(int userID, int userName, int priority, int estimatedTime, boolean isRecurring) {
-
-        for (Map.Entry<String, User> entry : userMap.entrySet()) {
-
-            if (entry.getKey().equals(userID) && entry.getValue().getName().equals(userName))
-                entry.getValue().taskList.add(createTask(priority, estimatedTime, isRecurring));
-
-        }
-    }
-
-    void  viewUsers() {
-
-        for (Map.Entry<String, User> entry : userMap.entrySet()) {
-
-            System.out.println(entry.getKey() + " " + entry.getValue() );
-
-        }
-
-    }
-
-    void viewTaskList() {
-
-        for (User user : userMap.values()) {
-
-            List<Task> taskList = user.taskList;
-            for (Task task : taskList)
-                System.out.println( task.getID()  + " " + user.getID() + " " + user.getName());
-
-        }
-    }
-
-    void giveFeedBackToTheUser(int userID, int userName) {
-
-        for (Map.Entry<String, User> entry : userMap.entrySet()) {
-
-            if (entry.getKey().equals(userID) && entry.getValue().getName().equals(userName))
-                entry.getValue().feedBacks.add("This is some feedback");
-
-        }
-    }
 
 }
 

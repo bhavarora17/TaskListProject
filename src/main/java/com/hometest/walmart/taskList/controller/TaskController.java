@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -31,20 +32,22 @@ public class TaskController {
         return "manager";
     }
 
-    @GetMapping("manage/getUserList")
+    @GetMapping("manager/viewUser")
+    public ResponseEntity<Object> viewUserByManager(@RequestParam(value = "userId", required = true) final String userId) {
+        User user = userDataAccessor.getUserData(userId);
+        return new ResponseEntity(user, HttpStatus.OK);
+    }
+    @GetMapping("manager/getUserList")
     public ModelAndView getListAll(@ModelAttribute User user) {
-        Map<String, User> userList = new HashMap<>();//userDataAccessor.getAllUsers();
-        userList.put("BHAVYA", new User("Bhavya"));
-        userList.put("ABHIJIT", new User("abhi"));
+        Map<String, User> userList = userDataAccessor.getAllUsers();
         ModelAndView model = new ModelAndView("manager.jsp");
         model.addObject("usersList", userList);
-        //model.addObject("testPath", 3);
-        return model;//new ResponseEntity(userList, HttpStatus.OK);
+        return model;  //new ResponseEntity(userList, HttpStatus.OK);
     }
 
-    @PostMapping("/manage/giveFeedback")
-    public ResponseEntity<Object> provideFeedback(@RequestBody String body, @PathVariable("feedback") final String feedback) {
-        userDataAccessor.giveFeedback();
+    @PostMapping("/manager/giveFeedback/{userId}")
+    public ResponseEntity<Object> provideFeedback(@RequestParam(value = "userId", required = true) final String userId, @PathVariable("feedback") final String feedback) {
+        userDataAccessor.giveFeedback(userId, feedback);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -67,13 +70,13 @@ public class TaskController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PatchMapping("user/update")
-    public ResponseEntity<Object> updateUserByManager(@RequestParam(value = "userId", required = true) final String userId, @RequestBody User body) {
-        User user = userDataAccessor.updateUser(userId);
-        return new ResponseEntity(user, HttpStatus.OK);
+    @GetMapping("/user/viewFeedback")
+    public ResponseEntity<Object> viewFeedbackByUser(@RequestParam(value = "userId", required = true) final String userId) {
+        userDataAccessor.viewFeedback(userId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PatchMapping("task/update/{taskid}")
+    @PatchMapping("task/update/{taskId}")
     public ResponseEntity updateTask(@RequestBody Task body, @PathVariable("taskId") final String taskId) {
 
         Task updatedTask = taskDataAccessor.updateTask(taskId, body);
@@ -92,9 +95,9 @@ public class TaskController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("notes/create")
-    public ResponseEntity createNotes(@RequestBody String body) {
-        userDataAccessor.createNotes(body);
+    @PostMapping("user/createNote")
+    public ResponseEntity createNotes(@RequestParam(value = "userId", required = true) final String userId, @PathVariable("feedback") final String notes) {
+        userDataAccessor.createNotes(userId, notes);
         return new ResponseEntity(HttpStatus.OK);
     }
 

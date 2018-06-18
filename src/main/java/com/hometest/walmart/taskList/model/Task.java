@@ -4,18 +4,40 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @JsonSerialize
 @JsonDeserialize
 public class Task extends Sequence {
 
+    class Status {
+
+        private String name;
+
+        Status(String name) {
+            this.name = name;
+        }
+
+         public int getValue() {
+            if (this.name.equalsIgnoreCase("PENDING"))
+                return 1;
+            else if (this.name.equalsIgnoreCase("PROCESSING"))
+                return 2;
+            else if (this.name.equalsIgnoreCase("FINISHED"))
+                return 3;
+            return 0;
+         }
+    }
+
     private String ID;
-    private int rank;
+    private int rank = 0;
     private int priority;
     private int estimatedTime;
     private int completionTime;
-    private String status;
+    private Status status;
     private boolean isRecurring;
-
+    private Map<String, Integer> statusMap;
     private static final int WEIGHTED_PRIORITY_CONSTANT = 10;
     private static final int WEIGHTED_TIME_CONSTANT = 5;
 
@@ -25,13 +47,19 @@ public class Task extends Sequence {
         this.priority = priority;
         this.estimatedTime = estimatedTime;
         this.isRecurring = isRecurring;
-        this.status = "NOT STARTED";
+        this.status = new Status("PENDING");
 
     }
 
-    public String getID() { return this.ID; }
+    public String getID() {
+        return this.ID;
+    }
 
     public int getRank() {
+
+        if (rank == 0)
+            calculateRankOfTheTask();
+
         return rank;
     }
 
@@ -59,12 +87,16 @@ public class Task extends Sequence {
         this.completionTime = completionTime;
     }
 
+    public int getStatusValue() {
+        return status.getValue();
+    }
+
     public String getStatus() {
-        return status;
+        return status.name;
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.status.name = status;
     }
 
     public boolean isRecurring() {
@@ -79,7 +111,6 @@ public class Task extends Sequence {
 
         int weightedPriority = this.priority * WEIGHTED_PRIORITY_CONSTANT;
         int weightedTime = this.estimatedTime * WEIGHTED_TIME_CONSTANT;
-
         this.rank = Math.round((weightedPriority/weightedTime) * 100);
 
     }

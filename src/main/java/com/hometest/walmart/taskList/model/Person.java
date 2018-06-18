@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-abstract class Person extends Sequence{
+class Person extends Sequence{
 
     String id;
     String name;
@@ -16,9 +16,6 @@ abstract class Person extends Sequence{
         return task;
 
     }
-
-    abstract void updateNotes();
-    abstract void checkAllTaskStatus();
 
     public String getID() { return this.id; }
     public String getName() { return this.name; }
