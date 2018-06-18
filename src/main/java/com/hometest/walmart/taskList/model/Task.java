@@ -6,9 +6,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @JsonSerialize
 @JsonDeserialize
-public class Task {
+public class Task extends Sequence {
 
-    private int ID;
+    private String ID;
     private int rank;
     private int priority;
     private int estimatedTime;
@@ -21,16 +21,15 @@ public class Task {
 
     public Task(int priority, int estimatedTime, boolean isRecurring) {
 
-        this.ID = 0;
+        this.ID = String.valueOf(nextValue());
         this.priority = priority;
         this.estimatedTime = estimatedTime;
         this.isRecurring = isRecurring;
         this.status = "NOT STARTED";
+
     }
 
-    public int getID() {
-        return ID;
-    }
+    public String getID() { return this.ID; }
 
     public int getRank() {
         return rank;

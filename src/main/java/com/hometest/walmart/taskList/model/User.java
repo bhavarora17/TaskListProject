@@ -12,11 +12,12 @@ import java.util.List;
 @JsonDeserialize
 public class User extends Person {
 
-    List<String> feedBacks;
+    List<String> feedBacks, Notes;
     List<Task> taskList, finishedTask;
 
     public User(String name) {
         this.name = name;
+        this.id = String. valueOf(nextValue());
         taskList = new ArrayList<>();
     }
 
@@ -26,12 +27,21 @@ public class User extends Person {
         return super.getName();
     }
 
+    @Override
+    @JsonProperty
+    public String getID() {
+        return super.getID();
+    }
+
+    public List<Task> getTaskList() { return this.taskList; }
+
+    public List<Task> getFinishTaskList() { return this.finishedTask; }
 
     @Override
     @JsonProperty
-    public List<String> getNotes() {
-        return super.getNotes();
-    }
+    public List<String> getNotes() { return super.getNotes(); }
+
+    public List<String> getFeedbacks() { return this.feedBacks; }
 
     @Override
     public void updateNotes() {
@@ -48,33 +58,9 @@ public class User extends Person {
 
     }
 
-    @Override
-    public void checkTaskStatusByID(int taskID) {
-
-        for (Task task : taskList) {
-            if (task.getID() == taskID)
-                System.out.println(task.getStatus());
-        }
-    }
-
     void addTaskToTaskList(int priority, int estimatedTime, boolean isRecurring) {
 
         taskList.add(createTask(priority, estimatedTime, isRecurring));
-
-    }
-
-
-    public void changeTaskStatus(int taskID, String status) {
-
-        for (Task task : taskList) {
-            if (task.getID() == taskID) {
-                task.setStatus(status);
-                if (status.equals("FINISHED")) {
-                    task.setCompletionTime(1);
-                    this.finishedTask.add(task);
-                }
-            }
-        }
 
     }
 

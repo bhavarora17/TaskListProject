@@ -6,7 +6,7 @@ public class Sequence {
 
     private static final AtomicInteger counter = new AtomicInteger();
 
-    public static int nextValue() {
+    public int nextValue() {
         return counter.getAndIncrement();
     }
 

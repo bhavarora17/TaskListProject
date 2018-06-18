@@ -70,13 +70,13 @@ public class TaskController {
 
     @PostMapping("task/create/{userId}")
     public ResponseEntity createTask(@RequestBody Task body, @PathVariable("userId") final String userId) {
-        taskDataAccessor.createTask(body, userId);
+        taskDataAccessor.createTask(body.getPriority(), body.getEstimatedTime(), body.isRecurring(), userId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping("task/delete/{taskId}")
-    public ResponseEntity deleteTask(@PathVariable("taskId") final String taskId) {
-        taskDataAccessor.deleteTask(taskId);
+    public ResponseEntity deleteTask(@PathVariable("taskId") final String taskId, @PathVariable("userId") final String userId) {
+        taskDataAccessor.deleteTask(taskId, userId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -94,7 +94,7 @@ public class TaskController {
 
     @GetMapping("/notes/{notesId}")
     public ResponseEntity getNotes(@PathVariable("notesId") String notesId) {
-        String notes = userDataAccessor.getNotes(notesId);
+        List<String> notes = userDataAccessor.getNotes(notesId);
         return new ResponseEntity(HttpStatus.OK);
     }
 }

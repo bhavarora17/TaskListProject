@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -24,6 +25,8 @@ public class UserDataAccessor {
     public void UserDataAccessor(CreateMongoDBCollection createMongoDBCollection){
         this.createMongoDBCollection = createMongoDBCollection;
     }
+
+    public Map<String, User> getUserInfo() { return userInfo; }
 
     MongoCollection<Document> getUserCollection() {
 
@@ -40,8 +43,10 @@ public class UserDataAccessor {
         return null;
     }
 
-    public String getNotes(String userId){
-        return null;
+    public List<String> getNotes(String userId) {
+
+        User user = getUserData(userId);
+        return user.getNotes();
     }
 
     public User updateUser(String userId){
@@ -56,8 +61,6 @@ public class UserDataAccessor {
         createMongoDBCollection.getMongoClient().close();
 
     }
-
-
 
     public void createUser(String userName) {
 
@@ -76,11 +79,10 @@ public class UserDataAccessor {
         //mapper.setVisibilityChecker(mapper.getVisibilityChecker().withFieldVisibility(Visibility.ANY));
 
         User user = null;
-
         MongoCollection<Document> col = getUserCollection();
-
         BasicDBObject query = new BasicDBObject("_id",new ObjectId(userId));
         FindIterable<Document> docs = col.find(query);
+
         if (docs != null) {
 
             for (Document doc : docs) {
@@ -92,7 +94,6 @@ public class UserDataAccessor {
         }
 
         createMongoDBCollection.getMongoClient().close();
-
         return user;
     }
 
@@ -104,18 +105,23 @@ public class UserDataAccessor {
             while (cur.hasNext()) {
 
                 Document doc = cur.next();
-                userInfo.putIfAbsent( (String)doc.get("_id"), (User) doc.get("Data"));
+                userInfo.putIfAbsent((String)doc.get("_id"), (User) doc.get("Data"));
 
             }
         }
 
         createMongoDBCollection.getMongoClient().close();
-
         return userInfo;
     }
 
-    public void giveFeedback(){
+    public void giveFeedback() {
 
+    }
+
+    public List<String> getFeedback(String userId) {
+
+        User user = getUserData(userId);
+        return user.getFeedbacks();
     }
 
 }

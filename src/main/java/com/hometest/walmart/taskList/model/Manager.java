@@ -1,6 +1,7 @@
 package com.hometest.walmart.taskList.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -17,8 +18,25 @@ public class Manager extends Person{
 
     public Manager(String name) {
         this.name = name;
+        this.id = String. valueOf(nextValue());
         userMap = new HashMap<>();
     }
+
+    @Override
+    @JsonProperty
+    public String getName() {
+        return super.getName();
+    }
+
+    @Override
+    @JsonProperty
+    public String getID() {
+        return super.getID();
+    }
+
+    @Override
+    @JsonProperty
+    public List<String> getNotes() { return super.getNotes(); }
 
     @Override
     public void updateNotes() {
@@ -44,41 +62,6 @@ public class Manager extends Person{
         }
     }
 
-    @Override
-    public void checkTaskStatusByID(int taskID) {
-
-        for (User user : userMap.values()) {
-
-            List<Task> taskList = user.taskList;
-
-            for (Task task : taskList) {
-
-                if (task.getID() == taskID) {
-                    System.out.println(user.getName() + " " + user.getID() + " "
-                            + task.getID() + " " + task.getPriority() + " " + task.getEstimatedTime()
-                            + " " + task.getCompletionTime() + " " + task.getStatus());
-                }
-            }
-        }
-    }
-
-    void createUser(String name) {
-
-        User user = new User(name);
-        userMap.put(user.getID(), user);
-
-    }
-
-    void deleteUser(int userID, String name) {
-
-        for (Map.Entry<String, User> entry : userMap.entrySet()) {
-
-            if (entry.getKey().equals(userID) && entry.getValue().getName().equals(name))
-                userMap.remove(entry.getKey());
-
-        }
-
-    }
 
     void assignTaskToTheUser(int userID, int userName, int priority, int estimatedTime, boolean isRecurring) {
 
