@@ -77,16 +77,19 @@ public class TaskController {
 
     @PostMapping("notes/create")
     public ResponseEntity createNotes(@RequestBody String body) {
+        userDataAccessor.createNotes(body);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PatchMapping("notes/update/{notesId}")
-    public ResponseEntity updateNotes(@RequestBody String body) {
+    @PatchMapping("notes/update/{userId}")
+    public ResponseEntity updateNotes(@RequestBody String body, @PathVariable("userId") final String userId) {
+        userDataAccessor.updateNotes(userId, body);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/notes/{notesId}")
-    public ResponseEntity getNotes(@RequestBody String body) {
+    public ResponseEntity getNotes(@PathVariable("notesId") String notesId) {
+        String notes = userDataAccessor.getNotes(notesId);
         return new ResponseEntity(HttpStatus.OK);
     }
 }

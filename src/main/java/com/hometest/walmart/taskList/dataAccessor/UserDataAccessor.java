@@ -16,6 +16,18 @@ public class UserDataAccessor {
 
     }
 
+    public void createNotes(String notes){
+        return ;//
+    }
+
+    public String updateNotes(String userId, String notes){
+        return null;
+    }
+
+    public String getNotes(String userId){
+        return null;
+    }
+
     public User updateUser(String userId){
         return null;// return updated user
     }
