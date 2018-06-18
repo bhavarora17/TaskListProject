@@ -62,16 +62,20 @@ public class TaskController {
 
     @PatchMapping("task/update/{taskid}")
     public ResponseEntity updateTask(@RequestBody Task body, @PathVariable("taskId") final String taskId) {
-        return new ResponseEntity(HttpStatus.OK);
+
+        Task updatedTask = taskDataAccessor.updateTask(taskId, body);
+        return new ResponseEntity(updatedTask, HttpStatus.OK);
     }
 
     @PostMapping("task/create/{userId}")
     public ResponseEntity createTask(@RequestBody Task body, @PathVariable("userId") final String userId) {
+        taskDataAccessor.createTask(body, userId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping("task/delete/{taskId}")
     public ResponseEntity deleteTask(@PathVariable("taskId") final String taskId) {
+        taskDataAccessor.deleteTask(taskId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -83,8 +87,8 @@ public class TaskController {
 
     @PatchMapping("notes/update/{userId}")
     public ResponseEntity updateNotes(@RequestBody String body, @PathVariable("userId") final String userId) {
-        userDataAccessor.updateNotes(userId, body);
-        return new ResponseEntity(HttpStatus.OK);
+        String updatedNotes = userDataAccessor.updateNotes(userId, body);
+        return new ResponseEntity(updatedNotes, HttpStatus.OK);
     }
 
     @GetMapping("/notes/{notesId}")

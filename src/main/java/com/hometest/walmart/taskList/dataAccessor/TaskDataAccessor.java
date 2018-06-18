@@ -1,5 +1,6 @@
 package com.hometest.walmart.taskList.dataAccessor;
 
+import com.hometest.walmart.taskList.model.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,19 @@ public class TaskDataAccessor {
 
     }
 
-    public void getTaskDetails(String id){
+    public Task getTaskDetails(String id){
+        return null;
+    }
+
+    public void deleteTask(String taskId){
+
+    }
+
+    public Task updateTask(String taskId, Task body){
+        return null;
+    }
+
+    public void createTask(Task body, String userID){
 
     }
 }
