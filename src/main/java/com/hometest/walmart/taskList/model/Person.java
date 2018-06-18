@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-abstract class Person {
+abstract class Person extends Sequence{
 
     public String ID;
     String name;
@@ -27,6 +27,7 @@ abstract class Person {
     abstract void checkTaskStatusByID(int taskID);
 
     String getID() { return this.ID; }
+    private void setID() { this.ID = String.valueOf(nextValue()); }
     String getName() { return this.name; }
 
 }
