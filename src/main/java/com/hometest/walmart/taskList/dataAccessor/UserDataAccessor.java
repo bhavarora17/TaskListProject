@@ -1,6 +1,8 @@
 package com.hometest.walmart.taskList.dataAccessor;
 
 import com.hometest.walmart.taskList.model.User;
+import com.mongodb.client.MongoCollection;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,9 +13,11 @@ import java.util.List;
 @Component
 public class UserDataAccessor {
 
-    @Autowired
-    public void UserDataAccessor(){
+    private CreateMongoDBCollection createMongoDBCollection;
 
+    @Autowired
+    public void UserDataAccessor(CreateMongoDBCollection createMongoDBCollection){
+        this.createMongoDBCollection = createMongoDBCollection;
     }
 
     public void createNotes(String notes){
@@ -36,14 +40,31 @@ public class UserDataAccessor {
         //delete using userId
     }
 
-    public void createUser(){
+    MongoCollection<Document> getUserCollection() {
+
+        createMongoDBCollection.createConnection();
+        return createMongoDBCollection.getCollection("People");
 
     }
 
-    public User getUserData(String userId) {
+    public void createUser(String userName) {
+
+        MongoCollection<Document> col = getUserCollection();
+        Document document = new Document();
+        document.put("Type", "User");
+        document.put("Data", new User(userName));
+        col.insertOne(document);
+        createMongoDBCollection.getMongoClient().close();
+
+    }
+
+    public User getUserData(int userId) {
         //mapper.setVisibilityChecker(mapper.getVisibilityChecker().withFieldVisibility(Visibility.ANY));
+
+        MongoCollection<Document> col = getUserCollection();
+
         User user = new User("Bhavya");
-        user.ID = 123;
+        user.ID = userId;
 
         return user;
     }

@@ -36,14 +36,14 @@ public class TaskController {
     }
 
     @GetMapping("user")
-    public ResponseEntity<Object> getTaskListUser(@RequestParam(value = "userId", required = true) final String userId) {
-        User user = userDataAccessor.getUserData("123");
+    public ResponseEntity<Object> getTaskListUser(@RequestParam(value = "userId", required = true) final int userId) {
+        User user = userDataAccessor.getUserData(userId);
         return new ResponseEntity(user, HttpStatus.OK);
     }
 
     @PostMapping("user/create")
     public ResponseEntity createUser(@RequestBody User user) {
-        userDataAccessor.createUser();
+        userDataAccessor.createUser(user.getName());
         return new ResponseEntity(HttpStatus.OK);
 
     }

@@ -15,7 +15,7 @@ public class User extends Person {
     List<String> feedBacks;
     List<Task> taskList, finishedTask;
 
-    public User( String name) {
+    public User(String name) {
         this.name = name;
         taskList = new ArrayList<>();
     }

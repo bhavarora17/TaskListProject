@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,11 @@ import java.util.Map;
 public class Manager extends Person{
 
     Map<Integer, User> userMap;
+
+    public Manager(String name) {
+        this.name = name;
+        userMap = new HashMap<>();
+    }
 
     @Override
     public void updateNotes() {
