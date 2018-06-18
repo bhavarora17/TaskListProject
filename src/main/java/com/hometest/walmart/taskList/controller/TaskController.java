@@ -1,5 +1,6 @@
 package com.hometest.walmart.taskList.controller;
 
+import com.hometest.walmart.taskList.dataAccessor.TaskDataAccessor;
 import com.hometest.walmart.taskList.dataAccessor.UserDataAccessor;
 import com.hometest.walmart.taskList.model.Task;
 import com.hometest.walmart.taskList.model.User;
@@ -8,24 +9,30 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class TaskController {
 
     private UserDataAccessor userDataAccessor;
+    private TaskDataAccessor taskDataAccessor;
 
     @Autowired
-    TaskController(UserDataAccessor userDataAccessor){
+    TaskController(UserDataAccessor userDataAccessor, TaskDataAccessor taskDataAccessor){
         this.userDataAccessor = userDataAccessor;
+        this.taskDataAccessor = taskDataAccessor;
     }
 
-    @GetMapping("manager")
-    public ResponseEntity getListAll() {
-        return new ResponseEntity(HttpStatus.OK);
+    @GetMapping("manage/getUserList")
+    public ResponseEntity<Object> getListAll() {
+        List<User> userList = userDataAccessor.getAllUsers();
+        return new ResponseEntity(userList, HttpStatus.OK);
     }
 
-    @PostMapping("/manage/feedback")
+    @PostMapping("/manage/giveFeedback")
     public ResponseEntity<Object> provideFeedback(@RequestBody String body, @PathVariable("feedback") final String feedback) {
-        return new ResponseEntity(new User("Bhavya"), HttpStatus.OK);
+        userDataAccessor.giveFeedback();
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("user")
@@ -36,11 +43,14 @@ public class TaskController {
 
     @PostMapping("user/create")
     public ResponseEntity createUser(@RequestBody User user) {
+        userDataAccessor.createUser();
         return new ResponseEntity(HttpStatus.OK);
+
     }
 
     @DeleteMapping("user/delete")
     public ResponseEntity deleteUserByManager(@RequestParam(value = "userId", required = true) final String userId) {
+        userDataAccessor.deleteUser(userId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
