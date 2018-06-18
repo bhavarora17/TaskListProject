@@ -7,12 +7,14 @@ import com.hometest.walmart.taskList.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
-@RestController
+@Controller
 public class TaskController {
 
     private UserDataAccessor userDataAccessor;
@@ -24,10 +26,20 @@ public class TaskController {
         this.taskDataAccessor = taskDataAccessor;
     }
 
+    @GetMapping("/viewManagerActivities")
+    public String passParametersWithModelMap() {
+        return "manager";
+    }
+
     @GetMapping("manage/getUserList")
-    public ResponseEntity<Object> getListAll() {
-        Map<String, User> userList = userDataAccessor.getAllUsers();
-        return new ResponseEntity(userList, HttpStatus.OK);
+    public ModelAndView getListAll(@ModelAttribute User user) {
+        Map<String, User> userList = new HashMap<>();//userDataAccessor.getAllUsers();
+        userList.put("BHAVYA", new User("Bhavya"));
+        userList.put("ABHIJIT", new User("abhi"));
+        ModelAndView model = new ModelAndView("manager.jsp");
+        model.addObject("usersList", userList);
+        //model.addObject("testPath", 3);
+        return model;//new ResponseEntity(userList, HttpStatus.OK);
     }
 
     @PostMapping("/manage/giveFeedback")
