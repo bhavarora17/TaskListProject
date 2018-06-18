@@ -1,13 +1,20 @@
 package com.hometest.walmart.taskList.dataAccessor;
 
 import com.hometest.walmart.taskList.model.User;
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.mongodb.client.model.Filters.eq;
 
 
 @Component
@@ -50,27 +57,54 @@ public class UserDataAccessor {
     public void createUser(String userName) {
 
         MongoCollection<Document> col = getUserCollection();
+
         Document document = new Document();
         document.put("Type", "User");
         document.put("Data", new User(userName));
         col.insertOne(document);
+
         createMongoDBCollection.getMongoClient().close();
 
     }
 
-    public User getUserData(int userId) {
+    public User getUserData(String userId) {
         //mapper.setVisibilityChecker(mapper.getVisibilityChecker().withFieldVisibility(Visibility.ANY));
+
+        User user = null;
 
         MongoCollection<Document> col = getUserCollection();
 
-        User user = new User("Bhavya");
-        user.ID = userId;
+        BasicDBObject query = new BasicDBObject("_id",new ObjectId(userId));
+        FindIterable<Document> docs = col.find(query);
+        if (docs != null) {
+
+            for (Document doc : docs) {
+                user = (User) doc.get("Data");
+            }
+
+        }
+
+        createMongoDBCollection.getMongoClient().close();
 
         return user;
     }
 
-    public List<User> getAllUsers(){
-        return null;
+    public Map<String, User> getAllUsers(){
+
+        Map<String, User> userInfo = new HashMap<>();
+        MongoCollection<Document> col = getUserCollection();
+        try (MongoCursor<Document> cur = col.find().iterator()) {
+            while (cur.hasNext()) {
+
+                Document doc = cur.next();
+                userInfo.put((String)doc.get("_id"), (User)doc.get("Data"));
+
+            }
+        }
+
+        createMongoDBCollection.getMongoClient().close();
+
+        return userInfo;
     }
 
     public void giveFeedback(){

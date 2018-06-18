@@ -13,7 +13,7 @@ import java.util.Map;
 @JsonDeserialize
 public class Manager extends Person{
 
-    Map<Integer, User> userMap;
+    Map<String, User> userMap;
 
     public Manager(String name) {
         this.name = name;
@@ -71,9 +71,9 @@ public class Manager extends Person{
 
     void deleteUser(int userID, String name) {
 
-        for (Map.Entry<Integer, User> entry : userMap.entrySet()) {
+        for (Map.Entry<String, User> entry : userMap.entrySet()) {
 
-            if (entry.getKey() == userID && entry.getValue().getName().equals(name))
+            if (entry.getKey().equals(userID) && entry.getValue().getName().equals(name))
                 userMap.remove(entry.getKey());
 
         }
@@ -82,9 +82,9 @@ public class Manager extends Person{
 
     void assignTaskToTheUser(int userID, int userName, int priority, int estimatedTime, boolean isRecurring) {
 
-        for (Map.Entry<Integer, User> entry : userMap.entrySet()) {
+        for (Map.Entry<String, User> entry : userMap.entrySet()) {
 
-            if (entry.getKey() == userID && entry.getValue().getName().equals(userName))
+            if (entry.getKey().equals(userID) && entry.getValue().getName().equals(userName))
                 entry.getValue().taskList.add(createTask(priority, estimatedTime, isRecurring));
 
         }
@@ -92,7 +92,7 @@ public class Manager extends Person{
 
     void  viewUsers() {
 
-        for (Map.Entry<Integer, User> entry : userMap.entrySet()) {
+        for (Map.Entry<String, User> entry : userMap.entrySet()) {
 
             System.out.println(entry.getKey() + " " + entry.getValue() );
 
@@ -113,9 +113,9 @@ public class Manager extends Person{
 
     void giveFeedBackToTheUser(int userID, int userName) {
 
-        for (Map.Entry<Integer, User> entry : userMap.entrySet()) {
+        for (Map.Entry<String, User> entry : userMap.entrySet()) {
 
-            if (entry.getKey() == userID && entry.getValue().getName().equals(userName))
+            if (entry.getKey().equals(userID) && entry.getValue().getName().equals(userName))
                 entry.getValue().feedBacks.add("This is some feedback");
 
         }

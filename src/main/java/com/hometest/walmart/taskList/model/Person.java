@@ -6,7 +6,7 @@ import java.util.List;
 
 abstract class Person {
 
-    public int ID = 0;
+    public String ID;
     String name;
 
     public List<String> getNotes() {
@@ -26,7 +26,7 @@ abstract class Person {
     abstract void checkAllTaskStatus();
     abstract void checkTaskStatusByID(int taskID);
 
-    int getID() { return this.ID; }
+    String getID() { return this.ID; }
     String getName() { return this.name; }
 
 }

@@ -36,7 +36,7 @@ public class TaskController {
     }
 
     @GetMapping("user")
-    public ResponseEntity<Object> getTaskListUser(@RequestParam(value = "userId", required = true) final int userId) {
+    public ResponseEntity<Object> getTaskListUser(@RequestParam(value = "userId", required = true) final String userId) {
         User user = userDataAccessor.getUserData(userId);
         return new ResponseEntity(user, HttpStatus.OK);
     }
