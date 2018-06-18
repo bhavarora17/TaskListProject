@@ -76,13 +76,6 @@ public class TaskController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PatchMapping("task/update/{taskId}")
-    public ResponseEntity updateTask(@RequestBody Task body, @PathVariable("taskId") final String taskId) {
-
-        Task updatedTask = taskDataAccessor.updateTask(taskId, body);
-        return new ResponseEntity(updatedTask, HttpStatus.OK);
-    }
-
     @PostMapping("task/create/{userId}")
     public ResponseEntity createTask(@RequestBody Task body, @PathVariable("userId") final String userId) {
         taskDataAccessor.createTask(body.getPriority(), body.getEstimatedTime(), body.isRecurring(), userId);
