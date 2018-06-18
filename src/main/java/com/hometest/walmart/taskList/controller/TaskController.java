@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class TaskController {
@@ -25,7 +26,7 @@ public class TaskController {
 
     @GetMapping("manage/getUserList")
     public ResponseEntity<Object> getListAll() {
-        List<User> userList = userDataAccessor.getAllUsers();
+        Map<String, User> userList = userDataAccessor.getAllUsers();
         return new ResponseEntity(userList, HttpStatus.OK);
     }
 

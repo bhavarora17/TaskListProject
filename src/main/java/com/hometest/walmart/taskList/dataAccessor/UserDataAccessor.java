@@ -21,10 +21,18 @@ import static com.mongodb.client.model.Filters.eq;
 public class UserDataAccessor {
 
     private CreateMongoDBCollection createMongoDBCollection;
+    private Map<String, User> userInfo;
 
     @Autowired
     public void UserDataAccessor(CreateMongoDBCollection createMongoDBCollection){
         this.createMongoDBCollection = createMongoDBCollection;
+    }
+
+    MongoCollection<Document> getUserCollection() {
+
+        createMongoDBCollection.createConnection();
+        return createMongoDBCollection.getCollection("People");
+
     }
 
     public void createNotes(String notes){
@@ -44,15 +52,15 @@ public class UserDataAccessor {
     }
 
     public void deleteUser(String userId){
-        //delete using userId
-    }
 
-    MongoCollection<Document> getUserCollection() {
-
-        createMongoDBCollection.createConnection();
-        return createMongoDBCollection.getCollection("People");
+        MongoCollection<Document> col = getUserCollection();
+        col.deleteOne(new Document("_id", new ObjectId(userId)));
+        userInfo.remove(userId);
+        createMongoDBCollection.getMongoClient().close();
 
     }
+
+
 
     public void createUser(String userName) {
 
@@ -80,6 +88,8 @@ public class UserDataAccessor {
 
             for (Document doc : docs) {
                 user = (User) doc.get("Data");
+                String id = (String)doc.get("_id");
+                userInfo.putIfAbsent(id, user);
             }
 
         }
@@ -91,13 +101,13 @@ public class UserDataAccessor {
 
     public Map<String, User> getAllUsers(){
 
-        Map<String, User> userInfo = new HashMap<>();
+        userInfo = new HashMap<>();
         MongoCollection<Document> col = getUserCollection();
         try (MongoCursor<Document> cur = col.find().iterator()) {
             while (cur.hasNext()) {
 
                 Document doc = cur.next();
-                userInfo.put((String)doc.get("_id"), (User)doc.get("Data"));
+                userInfo.putIfAbsent( (String)doc.get("_id"), (User) doc.get("Data"));
 
             }
         }
